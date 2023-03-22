@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login Page</title>
+        <!-- Bootstrap CDN -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+        <!-- Custom CSS -->
+        <style>
+            body {
+                font-family: 'Montserrat', sans-serif;
+            }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+    
+        .logo {
+            width: 500px;
+            height: 200px;
+            background-image: url('https://s3-alpha-sig.figma.com/img/7b63/0919/d3ecb918cee08d70a4276e5089ed5367?Expires=1679875200&Signature=lgG3DV1ARD9W1oNqdw~Zs303ZV-q--n2YIM40nKR4q8EVs9fTIQTubaKQR8QGFspkKsTVa5kXWh9bMUVEcWa7IFl1gk3fYWSFp0dLaT8LY-4i3QXlitJ84pBg-8e3jp6~jKqNwiOzeLOvMTkEycrKuT9igEQFLxY6GPSvmVMV2CutIuRNzDtjvTJdmPmBBIXdaBLEMCnQmRBtzHieLjUlIIOkk5zoMJu82tW7ETi6SlXOM4Ks8VWYT-k-QY3~aGOvnsjCKjOjghwU12A6HMianT7jutIrhUcjaZV6W8H-2v40vG5N-mZLfeB0CjsOgLoPhmhX0U5twUw75lEVaDZlQ__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4');
+            background-size: cover;
+            background-position: center;
+        }
+    
+        .form-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #1A50B5;
+            
+        }
+    
+        .form {
+  display: none;
+}
+.form.active {
+  display: block;
+}
+.form-title {
+  display: inline-block;
+  padding: 10px;
+  cursor: pointer;
+  color: #ffffff;
+  border-bottom: 1px solid #ffffff;
+}
+.form-title.active {
+    border-bottom: 3px solid #ffffff;
+}
+.form-input {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.form-submit {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #FF9E0D
+;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.form-submit:hover {
+  background-color: #ccc;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+
+    </style>
+</head>
+<body>
+    <!-- Code By Jasmine Tayone -->
+	<div class="container-fluid">
+        <div class="row">
+          <!-- Logo Container -->
+          <div class="col-md-6 logo-container">
+            <a href="#"><div class="logo"></div></a>
+          </div>
+          <!-- Form Container -->
+          <div class="col-md-6 form-container">
+            <form id="login-form" class="form active">
+                <h2 class="form-title active" id="login-title" onclick="toggleForm(this)">LOGIN</h2>
+                <h2 class="form-title" id="signup-title" onclick="toggleForm(this)">SIGN UP</h2>
+                <input type="text" class="form-input" placeholder="Username" id="username">
+                <input type="password" class="form-input" placeholder="Password" id="password">
+                <button type="submit" class="form-submit" onclick="signIn(event)">Login</button>
+            </form>
+            <form id="signup-form" class="form">
+                <h2 class="form-title" id="login-title" onclick="toggleForm(this)">LOGIN</h2>
+                <h2 class="form-title active" id="signup-title" onclick="toggleForm(this)">SIGN UP</h2>
+                <input type="text" class="form-input" placeholder="First Name" id="first-name">
+                <input type="text" class="form-input" placeholder="Last Name" id="last-name">
+                <input type="text" class="form-input" placeholder="Email" id="email">
+                <input type="password" class="form-input" placeholder="Password" id="signup-password">
+                <button type="submit" class="form-submit" onclick="signUp(event)">Sign Up</button>
+            </form>
+          </div>
+          
+          
+        </div>
+      </div>
+      <!-- Code By Jasmine Tayone -->
+    <!-- Modal for success message -->
+<div id="success-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <p id="success-message"></p>
+    </div>
+</div>
+
+  
+  <!-- Modal for error message -->
+	<div id="error-modal" class="modal">
+		<div class="modal-content">
+			<span class="close" onclick="closeModal()">&times;</span>
+			<p id="error-message"></p>
+		</div>
+	</div>
+
+  <!-- Code By Jasmine Tayone -->
+
+	<!-- Bootstrap JS CDN -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function toggleForm(formTitle) {
+          const formTitleId = formTitle.id;
+          const loginForm = document.getElementById('login-form');
+          const signupForm = document.getElementById('signup-form');
+        
+          if (formTitleId === 'login-title') {
+            loginForm.classList.add('active');
+            signupForm.classList.remove('active');
+          } else if (formTitleId === 'signup-title') {
+            loginForm.classList.remove('active');
+            signupForm.classList.add('active');
+          }
+        }
+        
+        function signIn(event) {
+          event.preventDefault();
+        
+          const username = document.getElementById('username').value;
+          const password = document.getElementById('password').value;
+        
+          if (!username.trim() || !password.trim()) {
+            alert('Please enter a username and password.');
+            return;
+          }
+        
+          // Hash the password using bcrypt
+          const hashedPassword = bcrypt.hashSync(password, 10);
+        
+          const user = {
+            username,
+            password: hashedPassword
+          };
+        
+          // Display success message in modal
+          const modal = document.getElementById('signup-modal');
+          const modalMessage = document.getElementById('signup-modal-message');
+          modalMessage.innerHTML = 'Signed in successfully!';
+          modal.style.display = 'block';
+        }
+        
+        function signUp(event) {
+          event.preventDefault();
+        
+          const firstName = document.getElementById('first-name').value;
+          const lastName = document.getElementById('last-name').value;
+          const email = document.getElementById('email').value;
+          const password = document.getElementById('signup-password').value;
+        
+          if (!firstName.trim() || !lastName.trim() || !email.trim() || !password.trim()) {
+            alert('Please fill out all fields.');
+            return;
+          }
+        
+          // Hash the password using bcrypt
+          const hashedPassword = bcrypt.hashSync(password, 10);
+        
+          const user = {
+            firstName,
+            lastName,
+            email,
+            password: hashedPassword
+          };
+        }
+      </script>
+      
+      
+</body>
+</html>
